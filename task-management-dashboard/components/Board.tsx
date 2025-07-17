@@ -26,7 +26,6 @@ export default function Board({ search }: { search: string }) {
         ...columns,
         {
           title: newColumnName,
-          color: "text-gray-600",
           cards: [],
         },
       ]);
@@ -80,7 +79,7 @@ export default function Board({ search }: { search: string }) {
         {filteredColumns.map((col, colIdx) => (
           <div key={col.title} className="w-64 p-2 shadow-lg rounded-[10px] bg-white">
             {/* Column header and actions */}
-            <Column title={col.title} color={col.color} cards={[]} />
+            <Column title={col.title} cards={[]} />
             {/* Droppable area for cards only */}
             <Droppable droppableId={col.title} key={col.title}>
               {(provided) => (

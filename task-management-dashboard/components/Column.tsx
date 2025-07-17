@@ -15,7 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 
 interface ColumnProps {
   title: string;
-  color: string;
+  // color: string; // Remove color prop
   cards: {
     id: number;
     title: string;
@@ -28,7 +28,14 @@ interface ColumnProps {
   }[];
 }
 
-export default function Column({ title, color, cards }: ColumnProps) {
+// Map column titles to global color classes
+const columnTitleColor: Record<string, string> = {
+  'To Do': 'text-primary',
+  'In Progress': 'text-yellow-600', // You may want to add a custom class or variable for this
+  'Done': 'text-green-600', // You may want to add a custom class or variable for this
+};
+
+export default function Column({ title, cards }: ColumnProps) {
   const [open, setOpen] = useState(false);
   const [newColumnName, setNewColumnName] = useState("");
   const [details, setDetails] = useState("");
@@ -42,10 +49,13 @@ export default function Column({ title, color, cards }: ColumnProps) {
     }
   };
 
+  // Use mapped color or fallback
+  const titleColorClass = columnTitleColor[title] || 'text-primary';
+
   return (
-    <div className="w-64 p-2 shadow-lg rounded-[10px] bg-white">
+    <div className="w-60 p-2  bg-white">
       <div className="flex items-center justify-between mb-2">
-        <h3 className={`text-sm font-medium ${color}`}>{title}</h3>
+        <h3 className={`text-sm font-medium ${titleColorClass}`}>{title}</h3>
         <div className="flex gap-1">
           <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -105,7 +115,9 @@ export default function Column({ title, color, cards }: ColumnProps) {
             <MoreHorizontal size={16} />
           </Button>
         </div>
+       
       </div>
+      <hr className="my-2 border-gray-200" />
       <div className="space-y-2">
         {cards.map((card) => (
           <TaskCard key={card.id} {...card} />

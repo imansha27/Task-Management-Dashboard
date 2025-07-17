@@ -2,7 +2,6 @@
 
 import Sidebar from "@/components/Sidebar"
 import { useEffect, useState } from 'react'
-import { useTaskStore } from '@/store/TaskCardStore'
 import Navbar from "@/components/Navbar"
 import ProjectCard from "@/components/ProjectCard"
 import Board from "@/components/Board"
@@ -11,11 +10,9 @@ export default function HomePage() {
   const [search, setSearch] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(true)
   const [selectedProject, setSelectedProject] = useState('Sport Xi Project')
-  const { loadTasks } = useTaskStore()
 
-  useEffect(() => {
-    loadTasks()
-  }, [loadTasks])
+
+
 
   return (
     <main className="min-h-screen  flex">

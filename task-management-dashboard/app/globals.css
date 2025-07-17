@@ -115,6 +115,14 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Custom column title colors for consistency */
+.text-yellow-600 {
+  color: oklch(0.755 0.164 99.6); /* Approximate yellow, adjust as needed */
+}
+.text-green-600 {
+  color: oklch(0.624 0.144 142.1); /* Approximate green, adjust as needed */
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

@@ -24,7 +24,7 @@ export default function Sidebar({ open = true, onSelectProject }: SidebarProps) 
           animate={{ width: 256, opacity: 1 }}
           exit={{ width: 0, opacity: 0 }}
           transition={{ width: { type: 'spring', stiffness: 200, damping: 30 }, opacity: { duration: 0.2 } }}
-          className="fixed top-0 left-0 h-screen z-30 shadow border-r bg-white flex flex-col justify-between"
+          className="fixed top-0 left-0 h-screen z-30 shadow border-r bg-[var(--sidebar)] flex flex-col justify-between"
           style={{ minWidth: 0, overflow: 'hidden' }}
         >
           <motion.div
@@ -37,11 +37,11 @@ export default function Sidebar({ open = true, onSelectProject }: SidebarProps) 
             <div>
               {/* Workspace Selector */}
               <div className="flex items-center gap-2 px-6 py-4">
-                <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
-                  <Folder className="text-gray-500" size={22} />
+                <div className="w-10 h-10 rounded-full bg-[var(--muted)] flex items-center justify-center">
+                  <Folder className="text-muted-foreground" size={22} />
                 </div>
                 <div>
-                  <div className="text-xs text-gray-400">workspace</div>
+                  <div className="text-xs text-muted-foreground">workspace</div>
                   <div className="font-semibold text-sm">Root folder</div>
                 </div>
               </div>
@@ -49,13 +49,13 @@ export default function Sidebar({ open = true, onSelectProject }: SidebarProps) 
               <nav className="mt-2">
                 <ul>
                   <li>
-                    <a href="#" className="flex items-center gap-3 px-4 py-2 rounded text-gray-700 hover:bg-gray-100 font-medium">
+                    <a href="#" className="flex items-center gap-3 px-4 py-2 rounded text-[var(--foreground)] hover:bg-[var(--muted)] font-medium">
                       <LayoutGrid size={18} /> Dashboard
                     </a>
                   </li>
                   <li>
                     <button
-                      className="flex items-center gap-3 px-4 py-2 rounded text-blue-600 bg-blue-50 font-medium w-full focus:outline-none"
+                      className="flex items-center gap-3 px-4 py-2 rounded text-primary bg-[var(--muted)] font-medium w-full focus:outline-none"
                       onClick={() => setBoardsOpen((v) => !v)}
                       aria-expanded={boardsOpen}
                     >
@@ -81,7 +81,7 @@ export default function Sidebar({ open = true, onSelectProject }: SidebarProps) 
                           {boards.map((board) => (
                             <li
                               key={board.name}
-                              className={`text-sm py-1 cursor-pointer px-2 rounded ${board.active ? 'text-blue-600 font-semibold' : 'text-gray-400'} hover:bg-gray-100`}
+                              className={`text-sm py-1 cursor-pointer px-2 rounded ${board.active ? 'text-primary font-semibold' : 'text-muted-foreground'} hover:bg-[var(--muted)]`}
                               onClick={() => onSelectProject && onSelectProject(board.name)}
                             >
                               {board.name}
@@ -92,18 +92,18 @@ export default function Sidebar({ open = true, onSelectProject }: SidebarProps) 
                     </AnimatePresence>
                   </li>
                   <li>
-                    <a href="#" className="flex items-center gap-3 px-4 py-2 rounded text-gray-700 hover:bg-gray-100 font-medium relative">
+                    <a href="#" className="flex items-center gap-3 px-4 py-2 rounded text-[var(--foreground)] hover:bg-[var(--muted)] font-medium relative">
                       <MessageCircle size={18} /> Messages
-                      <span className="absolute right-4 bg-orange-500 text-white text-xs rounded-full px-2 py-0.5">3</span>
+                      <span className="absolute right-4 bg-[var(--accent)] text-[var(--accent-foreground)] text-xs rounded-full px-2 py-0.5">3</span>
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="flex items-center gap-3 px-4 py-2 rounded text-gray-700 hover:bg-gray-100 font-medium">
+                    <a href="#" className="flex items-center gap-3 px-4 py-2 rounded text-[var(--foreground)] hover:bg-[var(--muted)] font-medium">
                       <Calendar size={18} /> Calendar
                     </a>
                   </li>
                   <li>
-                    <a href="#" className="flex items-center gap-3 px-4 py-2 rounded text-gray-700 hover:bg-gray-100 font-medium">
+                    <a href="#" className="flex items-center gap-3 px-4 py-2 rounded text-[var(--foreground)] hover:bg-[var(--muted)] font-medium">
                       <Users size={18} /> Team members
                     </a>
                   </li>
@@ -111,10 +111,10 @@ export default function Sidebar({ open = true, onSelectProject }: SidebarProps) 
               </nav>
             </div>
             <div>
-              <a href="#" className="flex items-center gap-3 px-4 py-2 rounded text-gray-700 hover:bg-gray-100 font-medium mb-2">
+              <a href="#" className="flex items-center gap-3 px-4 py-2 rounded text-[var(--foreground)] hover:bg-[var(--muted)] font-medium mb-2">
                 Support
               </a>
-              <button className="w-full flex items-center gap-3 px-4 py-2 rounded bg-gray-800 text-white font-medium">
+              <button className="w-full flex items-center gap-3 px-4 py-2 rounded bg-[var(--foreground)] text-[var(--background)] font-medium">
                 <LogOut size={18} /> Logout
               </button>
             </div>
