@@ -18,7 +18,7 @@ export default function Navbar({
 }) {
   return (
     <nav className="w-full bg-[var(--sidebar)] border-b border-[var(--sidebar-border)] px-6 py-3 flex items-center justify-between">
-      {/* Left: Hamburger + Logo */}
+ 
       <div className="flex items-center gap-3">
         <button
           aria-label={sidebarOpen ? "Close sidebar" : "Open sidebar"}

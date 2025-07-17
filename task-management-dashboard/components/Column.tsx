@@ -17,6 +17,7 @@ interface ColumnProps {
     image?: string;
     category?: string;
     categoryColor?: string;
+    description?: string;
   }[];
   onAddCard: (colTitle: string, card: any) => void;
 }
@@ -72,7 +73,7 @@ export default function Column({ title, cards, onAddCard }: ColumnProps) {
       <hr className="my-2 border-gray-200" />
       <div className="space-y-2">
         {cards.map((card) => (
-          <TaskCard key={card.id} {...card} />
+          <TaskCard key={card.id} {...card} description={card.description} />
         ))}
       </div>
     </div>

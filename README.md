@@ -7,7 +7,7 @@ A simple Kanban-style task management dashboard built with Next.js and React.
 ### 1. Download or Clone the Repository
 
 ```
-git clone https://github.com/your-username/your-repo.git
+git clone https://github.com/imansha27/Task-Management-Dashboard.git
 cd Task-Management-Dashboard
 ```
 

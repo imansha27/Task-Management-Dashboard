@@ -121,9 +121,9 @@ export default function Board({ search, tasks, columns, setTasks, setColumns }: 
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
-      <div className="flex flex-row gap-4 w-full overflow-x-auto p-4 whitespace-nowrap">
+      <div className="flex flex-row gap-2 md:gap-4 w-full overflow-x-auto p-2 sm:p-4 whitespace-nowrap min-w-0">
         {filteredColumns.map((col, colIdx) => (
-          <div key={col.title} className="w-64 p-2 shadow-lg rounded-[10px] bg-white">
+          <div key={col.title} className="w-48 sm:w-56 md:w-64 p-2 shadow-lg rounded-[10px] bg-white flex-shrink-0">
             {/* Column header and actions */}
             <Column title={col.title} cards={[]} onAddCard={handleAddCard} />
             {/* Droppable area for cards only */}
@@ -158,8 +158,8 @@ export default function Board({ search, tasks, columns, setTasks, setColumns }: 
           <DialogTrigger asChild>
             <Button
               variant="outline"
-              className="w-64 p-2 shadow-lg rounded-[10px] bg-white flex flex-col items-center justify-center min-h-[120px] border-2 border-dashed border-gray-300 hover:bg-gray-50 transition"
-              style={{ minWidth: 256 }}
+              className="w-48 sm:w-56 md:w-64 p-2 shadow-lg rounded-[10px] bg-white flex flex-col items-center justify-center min-h-[120px] border-2 border-dashed border-gray-300 hover:bg-gray-50 transition flex-shrink-0"
+              style={{ minWidth: 0 }}
             >
               <Plus className="text-gray-400 mb-1" size={28} />
               <span className="text-gray-500 font-medium">Add Column</span>
