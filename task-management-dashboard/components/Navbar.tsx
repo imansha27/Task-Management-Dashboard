@@ -61,7 +61,7 @@ export default function Navbar({
       </div>
       {/* Center: Create Board Button and Search */}
       <div className="flex items-center gap-4 flex-1 justify-center">
-        <Button className="bg-primary hover:bg-[var(--primary-foreground)] text-[var(--primary-foreground)] font-semibold flex items-center gap-2 px-4 py-2 rounded">
+        <Button className="bg-primary hover:bg-black text-[var(--primary-foreground)] font-semibold flex items-center gap-2 px-4 py-2 rounded">
           Create new board <Plus size={18} />
         </Button>
         <Input

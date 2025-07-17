@@ -24,10 +24,23 @@ export default function Board({ search }: { search: string }) {
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
+      // Try to get data from localStorage
+      const localTasks = localStorage.getItem('tasks');
+      const localColumns = localStorage.getItem('columns');
+      if (localTasks && localColumns) {
+        setTasks(JSON.parse(localTasks));
+        setColumns(JSON.parse(localColumns));
+        setLoading(false);
+        return;
+      }
+ 
       const res = await fetch("/tasks.json");
       const data = await res.json();
       setColumns(data.columns);
       setTasks(data.tasks);
+    
+      localStorage.setItem('tasks', JSON.stringify(data.tasks));
+      localStorage.setItem('columns', JSON.stringify(data.columns));
       setLoading(false);
     }
     fetchData();
@@ -40,7 +53,7 @@ export default function Board({ search }: { search: string }) {
       .filter(Boolean)
       .map((card: any) => ({
         ...card,
-        // Provide fallback values for missing fields
+       
         reports: card.reports ?? 0,
         image: card.image ?? undefined,
         category: card.category ?? "General",
@@ -51,14 +64,14 @@ export default function Board({ search }: { search: string }) {
 
   const handleAddColumn = () => {
     if (newColumnName.trim()) {
-      setColumns([
-        ...columns,
-        {
-          id: `column-${columns.length + 1}`,
-          title: newColumnName,
-          taskIds: [],
-        },
-      ]);
+      const newCol = {
+        id: `column-${columns.length + 1}`,
+        title: newColumnName,
+        taskIds: [],
+      };
+      const newColumns = [...columns, newCol];
+      setColumns(newColumns);
+      localStorage.setItem('columns', JSON.stringify(newColumns));
       setNewColumnName("");
       setOpen(false);
     }
@@ -82,25 +95,31 @@ export default function Board({ search }: { search: string }) {
     ) {
       return;
     }
+    // Find source and destination columns by title
     const sourceColIdx = columns.findIndex(col => col.title === source.droppableId);
     const destColIdx = columns.findIndex(col => col.title === destination.droppableId);
     const sourceCol = columns[sourceColIdx];
     const destCol = columns[destColIdx];
-    const sourceCards = Array.from(sourceCol.cards);
-    const [movedCard] = sourceCards.splice(source.index, 1);
-    if (sourceColIdx === destColIdx) {
-      sourceCards.splice(destination.index, 0, movedCard);
-      const newColumns = [...columns];
-      newColumns[sourceColIdx] = { ...sourceCol, cards: sourceCards };
-      setColumns(newColumns);
-    } else {
-      const destCards = Array.from(destCol.cards);
-      destCards.splice(destination.index, 0, movedCard);
-      const newColumns = [...columns];
-      newColumns[sourceColIdx] = { ...sourceCol, cards: sourceCards };
-      newColumns[destColIdx] = { ...destCol, cards: destCards };
-      setColumns(newColumns);
-    }
+    // Copy taskIds arrays
+    const sourceTaskIds = Array.from(sourceCol.taskIds);
+    const destTaskIds = Array.from(destCol.taskIds);
+    // Remove the task id from the source
+    const [removedTaskId] = sourceTaskIds.splice(source.index, 1);
+    // Insert the task id into the destination
+    destTaskIds.splice(destination.index, 0, removedTaskId);
+    // Build new columns array
+    const newColumns = [...columns];
+    newColumns[sourceColIdx] = { ...sourceCol, taskIds: sourceTaskIds };
+    newColumns[destColIdx] = { ...destCol, taskIds: destTaskIds };
+    setColumns(newColumns);
+    // Update the status property of the moved task
+    const updatedTasks = tasks.map(task =>
+      task.id === removedTaskId ? { ...task, status: newColumns[destColIdx].id } : task
+    );
+    setTasks(updatedTasks);
+    // Persist to localStorage
+    localStorage.setItem('columns', JSON.stringify(newColumns));
+    localStorage.setItem('tasks', JSON.stringify(updatedTasks));
   };
 
   return (

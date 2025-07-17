@@ -1,18 +1,10 @@
 import TaskCard from "@/components/TaskCard";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+
 import { useState } from "react";
-import { Plus, MoreHorizontal } from "lucide-react";
+import {  MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import AddCardDialog from "@/components/AddCardDialog";
+import { v4 as uuidv4 } from 'uuid';
 
 interface ColumnProps {
   title: string;
@@ -41,12 +33,40 @@ export default function Column({ title, cards }: ColumnProps) {
   const [newColumnName, setNewColumnName] = useState("");
   const [details, setDetails] = useState("");
 
-  const handleAddColumn = () => {
+  // Get columns and tasks from localStorage
+  const columns = JSON.parse(localStorage.getItem('columns') || '[]');
+  const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+
+  const handleAddCard = () => {
     if (newColumnName.trim()) {
-      // This would update columns in parent in a real app
+      // Find the column by title
+      const colIdx = columns.findIndex((col: any) => col.title === title);
+      if (colIdx === -1) return;
+      // Create new card
+      const newCard = {
+        id: uuidv4(),
+        title: newColumnName,
+        description: details,
+        priority: 'medium', // Default, can be extended
+        dueDate: '',
+        status: columns[colIdx].id,
+      };
+      // Add card to tasks
+      const newTasks = [...tasks, newCard];
+      // Add card id to column's taskIds
+      const newColumns = [...columns];
+      newColumns[colIdx] = {
+        ...newColumns[colIdx],
+        taskIds: [...newColumns[colIdx].taskIds, newCard.id],
+      };
+      // Persist
+      localStorage.setItem('tasks', JSON.stringify(newTasks));
+      localStorage.setItem('columns', JSON.stringify(newColumns));
       setNewColumnName("");
       setDetails("");
       setOpen(false);
+      // Optionally, trigger a state update in parent via callback/refresh
+      window.location.reload(); // Simple way to refresh UI
     }
   };
 
@@ -65,7 +85,7 @@ export default function Column({ title, cards }: ColumnProps) {
             setNewColumnName={setNewColumnName}
             details={details}
             setDetails={setDetails}
-            handleAddColumn={handleAddColumn}
+            handleAddColumn={handleAddCard}
           />
           <Button
             size="icon"
