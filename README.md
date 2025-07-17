@@ -39,5 +39,3 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to see the a
 - `task-management-dashboard/` - Main Next.js app source code
 - `public/tasks.json` - Mock data for initial tasks/columns
 
-## License
-MIT
