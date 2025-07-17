@@ -5,13 +5,16 @@ import { useEffect, useState } from 'react'
 import Navbar from "@/components/Navbar"
 import ProjectCard from "@/components/ProjectCard"
 import Board from "@/components/Board"
+// import { useTaskStore } from '@/store/TaskCardStore'
 
 export default function HomePage() {
   const [search, setSearch] = useState('')
   const [sidebarOpen, setSidebarOpen] = useState(true)
-  const [selectedProject, setSelectedProject] = useState('Sport Xi Project')
+  const [selectedProject, setSelectedProject] = useState('Project-1')
 
-
+  // useEffect(() => {
+  //   useTaskStore.getState().loadTasks();
+  // }, []);
 
 
   return (
@@ -26,7 +29,7 @@ export default function HomePage() {
             <ProjectCard projectName={selectedProject} />
           </div>
           <section className="flex-1 overflow-x-auto pt-6 px-8 max-w-full">
-              <Board search={""} />
+              <Board search={search} />
             </section>
         </div>
       </div>

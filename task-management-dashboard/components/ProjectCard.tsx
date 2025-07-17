@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button"
 import { Users } from "lucide-react"
 
 
-export default function ProjectCard({ projectName = "Sport Xi Project" }: { projectName?: string }) {
+export default function ProjectCard({ projectName = "Project-1" }: { projectName?: string }) {
   return (
     <div className="bg-[var(--card)] rounded-lg shadow p-6 flex flex-col gap-2 cursor-pointer">
       <div className="flex items-center gap-4">

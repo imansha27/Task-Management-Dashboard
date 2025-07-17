@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { mockColumns as initialColumns } from "@/lib/data";
+import { useState, useEffect } from "react";
 import Column from "@/components/Column";
 import { Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -16,17 +15,48 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import TaskCard from "@/components/TaskCard";
 
 export default function Board({ search }: { search: string }) {
-  const [columns, setColumns] = useState(initialColumns);
+  const [columns, setColumns] = useState<any[]>([]);
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [newColumnName, setNewColumnName] = useState("");
+
+  useEffect(() => {
+    async function fetchData() {
+      setLoading(true);
+      const res = await fetch("/tasks.json");
+      const data = await res.json();
+      setColumns(data.columns);
+      setTasks(data.tasks);
+      setLoading(false);
+    }
+    fetchData();
+  }, []);
+
+  // Helper to get cards for a column
+  function getCardsForColumn(column: any) {
+    return column.taskIds
+      .map((taskId: string) => tasks.find((t: any) => t.id === taskId))
+      .filter(Boolean)
+      .map((card: any) => ({
+        ...card,
+        // Provide fallback values for missing fields
+        reports: card.reports ?? 0,
+        image: card.image ?? undefined,
+        category: card.category ?? "General",
+        categoryColor: card.categoryColor ?? "bg-gray-400",
+        id: card.id,
+      }));
+  }
 
   const handleAddColumn = () => {
     if (newColumnName.trim()) {
       setColumns([
         ...columns,
         {
+          id: `column-${columns.length + 1}`,
           title: newColumnName,
-          cards: [],
+          taskIds: [],
         },
       ]);
       setNewColumnName("");
@@ -38,7 +68,7 @@ export default function Board({ search }: { search: string }) {
   const safeSearch = search || "";
   const filteredColumns = columns.map(col => ({
     ...col,
-    cards: col.cards.filter(card =>
+    cards: getCardsForColumn(col).filter((card: any) =>
       card.title.toLowerCase().includes(safeSearch.toLowerCase())
     ),
   }));
@@ -88,7 +118,7 @@ export default function Board({ search }: { search: string }) {
                   {...provided.droppableProps}
                   className="space-y-2 min-h-[40px]"
                 >
-                  {col.cards.map((card, cardIdx) => (
+                  {col.cards.map((card: any, cardIdx: number) => (
                     <Draggable key={card.id} draggableId={String(card.id)} index={cardIdx}>
                       {(provided) => (
                         <div
