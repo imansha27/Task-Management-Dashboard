@@ -76,7 +76,7 @@ interface AddCardDialogProps {
   setNewColumnName: (name: string) => void;
   details: string;
   setDetails: (details: string) => void;
-  handleAddColumn: () => void;
+  handleAddCard: (card: any) => void;
 }
 
 const AddCardDialog: React.FC<AddCardDialogProps> = ({
@@ -86,7 +86,7 @@ const AddCardDialog: React.FC<AddCardDialogProps> = ({
   setNewColumnName,
   details,
   setDetails,
-  handleAddColumn,
+  handleAddCard,
 }) => {
   // New states for card fields
   const [priority, setPriority] = React.useState(PRIORITIES[0]);
@@ -107,6 +107,21 @@ const AddCardDialog: React.FC<AddCardDialogProps> = ({
       reader.onload = (ev) => setImage(ev.target?.result as string);
       reader.readAsDataURL(file);
     }
+  };
+
+  // Helper to create a new card object
+  const createCard = () => {
+    return {
+      id: Date.now().toString(),
+      title: newColumnName,
+      description: details,
+      priority: priority.value,
+      dueDate: dueDate ? dueDate.toISOString().split('T')[0] : undefined,
+      image: image || undefined,
+      category: category.value,
+      categoryColor: category.pillColor,
+      status: '', // Will be set by parent
+    };
   };
 
   // Calendar logic
@@ -140,7 +155,7 @@ const AddCardDialog: React.FC<AddCardDialogProps> = ({
               value={newColumnName}
               onChange={(e) => setNewColumnName(e.target.value)}
               onKeyDown={(e) => {
-                if (e.key === "Enter") handleAddColumn();
+                if (e.key === "Enter") handleAddCard(createCard());
               }}
               autoFocus
             />
@@ -344,7 +359,7 @@ const AddCardDialog: React.FC<AddCardDialogProps> = ({
           </div>
         </div>
         <DialogFooter>
-          <Button onClick={handleAddColumn} disabled={!newColumnName.trim()}>
+          <Button onClick={() => handleAddCard(createCard())} disabled={!newColumnName.trim()}>
             Add
           </Button>
           <Button variant="ghost" onClick={() => setOpen(false)}>

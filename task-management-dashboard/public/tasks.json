@@ -22,28 +22,28 @@
       "title": "Design login page",
       "description": "Create a responsive login page UI.",
       "priority": "High",
-      "dueDate": "2024-06-10"
+      "dueDate": "2024-11-10"
     },
     {
       "id": "task-2",
       "title": "Set up database",
       "description": "Initialize PostgreSQL and create tables.",
       "priority": "Medium",
-      "dueDate": "2024-06-12"
+      "dueDate": "2024-05-38"
     },
     {
       "id": "task-3",
       "title": "Implement authentication",
       "description": "Add JWT-based authentication to backend.",
       "priority": "High",
-      "dueDate": "2024-06-15"
+      "dueDate": "2024-08-10"
     },
     {
       "id": "task-4",
       "title": "Write documentation",
       "description": "Document API endpoints and usage.",
       "priority": "Low",
-      "dueDate": "2024-06-20"
+      "dueDate": "2024-06-29"
     }
   ]
 } 

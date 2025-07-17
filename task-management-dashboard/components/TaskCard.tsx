@@ -44,7 +44,7 @@ export default function TaskCard({ title, priority, dueDate, reports, image, cat
         <div className="flex items-center justify-between text-xs text-muted-foreground pb-2">
           <div className="flex items-center gap-1">
             <MessageCircle size={16} className="mr-1" />
-            {reports ?? 4}
+            {reports ?? 6}
           </div>
           <div className="flex items-center gap-1">
             <CalendarIcon size={16} className="mr-1" />

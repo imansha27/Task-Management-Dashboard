@@ -4,7 +4,6 @@ import { useState } from "react";
 import {  MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AddCardDialog from "@/components/AddCardDialog";
-import { v4 as uuidv4 } from 'uuid';
 
 interface ColumnProps {
   title: string;
@@ -19,6 +18,7 @@ interface ColumnProps {
     category?: string;
     categoryColor?: string;
   }[];
+  onAddCard: (colTitle: string, card: any) => void;
 }
 
 // Map column titles to global color classes
@@ -28,46 +28,16 @@ const columnTitleColor: Record<string, string> = {
   'Done': 'text-green-600', // You may want to add a custom class or variable for this
 };
 
-export default function Column({ title, cards }: ColumnProps) {
+export default function Column({ title, cards, onAddCard }: ColumnProps) {
   const [open, setOpen] = useState(false);
   const [newColumnName, setNewColumnName] = useState("");
   const [details, setDetails] = useState("");
 
-  // Get columns and tasks from localStorage
-  const columns = JSON.parse(localStorage.getItem('columns') || '[]');
-  const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-
-  const handleAddCard = () => {
-    if (newColumnName.trim()) {
-      // Find the column by title
-      const colIdx = columns.findIndex((col: any) => col.title === title);
-      if (colIdx === -1) return;
-      // Create new card
-      const newCard = {
-        id: uuidv4(),
-        title: newColumnName,
-        description: details,
-        priority: 'medium', // Default, can be extended
-        dueDate: '',
-        status: columns[colIdx].id,
-      };
-      // Add card to tasks
-      const newTasks = [...tasks, newCard];
-      // Add card id to column's taskIds
-      const newColumns = [...columns];
-      newColumns[colIdx] = {
-        ...newColumns[colIdx],
-        taskIds: [...newColumns[colIdx].taskIds, newCard.id],
-      };
-      // Persist
-      localStorage.setItem('tasks', JSON.stringify(newTasks));
-      localStorage.setItem('columns', JSON.stringify(newColumns));
-      setNewColumnName("");
-      setDetails("");
-      setOpen(false);
-      // Optionally, trigger a state update in parent via callback/refresh
-      window.location.reload(); // Simple way to refresh UI
-    }
+  const handleAddCard = (card: any) => {
+    onAddCard(title, card);
+    setNewColumnName("");
+    setDetails("");
+    setOpen(false);
   };
 
   // Use mapped color or fallback
@@ -85,7 +55,7 @@ export default function Column({ title, cards }: ColumnProps) {
             setNewColumnName={setNewColumnName}
             details={details}
             setDetails={setDetails}
-            handleAddColumn={handleAddCard}
+            handleAddCard={handleAddCard}
           />
           <Button
             size="icon"

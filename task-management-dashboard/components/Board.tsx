@@ -14,37 +14,19 @@ import {
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import TaskCard from "@/components/TaskCard";
 
-export default function Board({ search }: { search: string }) {
-  const [columns, setColumns] = useState<any[]>([]);
-  const [tasks, setTasks] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+interface BoardProps {
+  search: string;
+  tasks: any[];
+  columns: any[];
+  setTasks: (tasks: any[]) => void;
+  setColumns: (columns: any[]) => void;
+}
+
+export default function Board({ search, tasks, columns, setTasks, setColumns }: BoardProps) {
+
   const [open, setOpen] = useState(false);
   const [newColumnName, setNewColumnName] = useState("");
 
-  useEffect(() => {
-    async function fetchData() {
-      setLoading(true);
-      // Try to get data from localStorage
-      const localTasks = localStorage.getItem('tasks');
-      const localColumns = localStorage.getItem('columns');
-      if (localTasks && localColumns) {
-        setTasks(JSON.parse(localTasks));
-        setColumns(JSON.parse(localColumns));
-        setLoading(false);
-        return;
-      }
- 
-      const res = await fetch("/tasks.json");
-      const data = await res.json();
-      setColumns(data.columns);
-      setTasks(data.tasks);
-    
-      localStorage.setItem('tasks', JSON.stringify(data.tasks));
-      localStorage.setItem('columns', JSON.stringify(data.columns));
-      setLoading(false);
-    }
-    fetchData();
-  }, []);
 
   // Helper to get cards for a column
   function getCardsForColumn(column: any) {
@@ -75,6 +57,21 @@ export default function Board({ search }: { search: string }) {
       setNewColumnName("");
       setOpen(false);
     }
+  };
+
+  // Add a new card to the correct column and persist
+  const handleAddCard = (colTitle: string, card: any) => {
+    // Add card to tasks
+    const newTasks = [...tasks, { ...card, status: columns.find(col => col.title === colTitle)?.id || '' }];
+    setTasks(newTasks);
+    // Add card id to the correct column's taskIds
+    const newColumns = columns.map(col =>
+      col.title === colTitle ? { ...col, taskIds: [...col.taskIds, card.id] } : col
+    );
+    setColumns(newColumns);
+    // Persist
+    localStorage.setItem('tasks', JSON.stringify(newTasks));
+    localStorage.setItem('columns', JSON.stringify(newColumns));
   };
 
   // Filter cards in each column based on the search value
@@ -128,7 +125,7 @@ export default function Board({ search }: { search: string }) {
         {filteredColumns.map((col, colIdx) => (
           <div key={col.title} className="w-64 p-2 shadow-lg rounded-[10px] bg-white">
             {/* Column header and actions */}
-            <Column title={col.title} cards={[]} />
+            <Column title={col.title} cards={[]} onAddCard={handleAddCard} />
             {/* Droppable area for cards only */}
             <Droppable droppableId={col.title} key={col.title}>
               {(provided) => (

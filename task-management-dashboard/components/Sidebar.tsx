@@ -94,7 +94,7 @@ export default function Sidebar({ open = true, onSelectProject }: SidebarProps) 
                   <li>
                     <a href="#" className="flex items-center gap-3 px-4 py-2 rounded text-[var(--foreground)] hover:bg-[var(--muted)] font-medium relative">
                       <MessageCircle size={18} /> Messages
-                      <span className="absolute right-4 bg-[var(--accent)] text-[var(--accent-foreground)] text-xs rounded-full px-2 py-0.5">3</span>
+                      <span className="absolute right-4 bg-[var(--accent)] text-[var(--accent-foreground)] text-xs rounded-full px-2 py-0.5">10</span>
                     </a>
                   </li>
                   <li>
