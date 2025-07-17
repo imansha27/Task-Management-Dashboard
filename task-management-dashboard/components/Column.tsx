@@ -12,10 +12,11 @@ import { Plus, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import AddCardDialog from "@/components/AddCardDialog";
 
 interface ColumnProps {
   title: string;
-  // color: string; // Remove color prop
+  
   cards: {
     id: number;
     title: string;
@@ -57,54 +58,15 @@ export default function Column({ title, cards }: ColumnProps) {
       <div className="flex items-center justify-between mb-2">
         <h3 className={`text-sm font-medium ${titleColorClass}`}>{title}</h3>
         <div className="flex gap-1">
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button
-                size="icon"
-                variant="ghost"
-                className="w-7 h-7 p-0 rounded-full hover:bg-gray-100 cursor-pointer"  
-                aria-label="Add column"
-              >
-                <Plus size={16} />
-              </Button>
-            </DialogTrigger>
-            <DialogContent>
-              <DialogHeader>
-                <DialogTitle>Add New Column</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-3">
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Heading</label>
-                  <Input
-                    placeholder="Column name"
-                    value={newColumnName}
-                    onChange={e => setNewColumnName(e.target.value)}
-                    onKeyDown={e => {
-                      if (e.key === "Enter") handleAddColumn();
-                    }}
-                    autoFocus
-                  />
-                </div>
-                <div>
-                  <label className="block text-xs font-medium text-gray-500 mb-1">Details</label>
-                  <Textarea
-                    placeholder="Description or details..."
-                    value={details}
-                    onChange={e => setDetails(e.target.value)}
-                    rows={3}
-                  />
-                </div>
-              </div>
-              <DialogFooter>
-                <Button onClick={handleAddColumn} disabled={!newColumnName.trim()}>
-                  Add
-                </Button>
-                <Button variant="ghost" onClick={() => setOpen(false)}>
-                  Cancel
-                </Button>
-              </DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <AddCardDialog
+            open={open}
+            setOpen={setOpen}
+            newColumnName={newColumnName}
+            setNewColumnName={setNewColumnName}
+            details={details}
+            setDetails={setDetails}
+            handleAddColumn={handleAddColumn}
+          />
           <Button
             size="icon"
             variant="ghost"
