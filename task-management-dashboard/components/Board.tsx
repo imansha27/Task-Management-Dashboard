@@ -15,7 +15,7 @@ import {
   AlertDialogCancel,
 } from "@/components/ui/alert-dialog";
 
-export default function Board() {
+export default function Board({ search }: { search: string }) {
   const [columns, setColumns] = useState(initialColumns);
   const [open, setOpen] = useState(false);
   const [newColumnName, setNewColumnName] = useState("");
@@ -35,9 +35,18 @@ export default function Board() {
     }
   };
 
+  // Filter cards in each column based on the search value
+  const safeSearch = search || "";
+  const filteredColumns = columns.map(col => ({
+    ...col,
+    cards: col.cards.filter(card =>
+      card.title.toLowerCase().includes(safeSearch.toLowerCase())
+    ),
+  }));
+
   return (
     <div className="flex flex-row gap-4 w-full overflow-x-auto p-4 whitespace-nowrap">
-      {columns.map((col) => (
+      {filteredColumns.map((col) => (
         <Column key={col.title} title={col.title} color={col.color} cards={col.cards} />
       ))}
       {/* Add Column Button with AlertDialog */}

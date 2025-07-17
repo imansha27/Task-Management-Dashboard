@@ -1,10 +1,11 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Users } from "lucide-react"
+import Board from "./Board"
 
 export default function ProjectCard() {
   return (
-    <div className="bg-white rounded-lg shadow p-6 flex flex-col gap-2 w-full max-w-2xl">
+    <div className="bg-white rounded-lg shadow p-6 flex flex-col gap-2">
       <div className="flex items-center gap-4">
         <div className="flex-1">
           <div className="flex items-center gap-2">
@@ -27,6 +28,9 @@ export default function ProjectCard() {
       </div>
       <hr className="my-2" />
       <div className="text-xs text-gray-400">Last updated on: 04 April, 2022</div>
+      <section className="flex-1 overflow-x-auto">
+              <Board search={""} />
+            </section>
     </div>
   )
 }
